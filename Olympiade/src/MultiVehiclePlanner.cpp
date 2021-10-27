@@ -35,14 +35,14 @@ void MultiVehiclePlanner::UpdatePlanner(Time step_size, Time /*planning_time*/) 
 		// Update planner
 		if (collision_detected) {
 			// TODO: Not stopping vehicle yet
+			std::cout << "Stopping vehicle" << std::endl;
+
 			auto currentstate = planner->GetCurrentVehicleState();
 			/*
 			auto pos = currentstate.GetPosition();
 			//planner->UpdateCurrentState(pos, currentstate.GetLaneletId(), {0.0, 0.0});
 			this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
 			*/
-			std::cout << "Stopping vehicle" << std::endl;
-
 			currentstate.SetVelocity({0.0, 0.0});
 			std::cout << "Changed Velocity" << currentstate.GetVelocity() << std::endl;
 			this->AddVehicleState(id, currentstate, "MultiVehiclePlanner");
