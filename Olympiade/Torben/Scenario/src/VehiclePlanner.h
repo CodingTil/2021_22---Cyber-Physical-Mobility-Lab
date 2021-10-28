@@ -15,17 +15,18 @@ using namespace cpm_routing;
  * allocated an deleted of target point is reached.
  */
 class VehiclePlanner {
- private:
+   private:
+  Pos target_pos_;
   bool target_position_reached_; ///< Indicates that the target is reached and no updates are needed.
 
   const VisualizationHandlerPtr vis_; ///< Visualization to show information in supported visualizations.
-  const LaneGraphPtr map_; ///< LaneGraph to navigate the vehicle on.
+  const LaneGraphPtr map_;      ///< LaneGraph to navigate the vehicle on.
 
   const Id vehicle_id_; ///< Id of the physical vehicle.
 
-  Time time_ = 0; ///< Time that is increased by each step.
+  Time time_ = 0;          ///< Time that is increased by each step.
   VehicleStates planned_states_; ///< Planned future state.
-  VehicleState current_state_; ///< Current state.
+  VehicleState current_state_;   ///< Current state.
 
 
   /**
@@ -41,14 +42,7 @@ class VehiclePlanner {
    */
   void AddState(VehicleState state);
 
-  /**
-   * Updates the current position and timing to match the position and lanelet given.
-   * @param position New position.
-   * @param lanelet_id New lanelet.
-   */
-  void UpdateCurrentState(Pos &position, long lanelet_id, const Vel &vel);
-
- public:
+   public:
   /**
    * Initialises a new planner and initialises the pointer to all helper classes.
    * @param vehicle_id Identifier of vehicle
@@ -66,11 +60,20 @@ class VehiclePlanner {
    */
   void InitialiseVehicleState(LaneletId lanelet_id, const Pos &pos, const Vel &vel, Time time);
 
+  void UpdateTimer(Time delta_t);
+
   /**
    * Updates the current plan until the target is reached than calculates a new route to next target.
    * @param delta_t Time elapsed since last update.
    */
   void Update(Time delta_t);
+
+  /**
+   * Updates the current position and timing to match the position and lanelet given.
+   * @param position New position.
+   * @param lanelet_id New lanelet.
+   */
+  void UpdateCurrentState(Pos &position, long lanelet_id, const Vel &vel);
 
   /**
    * Getter for the current state. Will be changed by an update.
@@ -79,19 +82,30 @@ class VehiclePlanner {
   [[nodiscard]] VehicleState GetCurrentVehicleState() const;
 
   /**
-   * Calculates a rout to the given target.
+   * This is insecure as fuck by I don't really care no more.
+   * Getter for the planned states. Will be changed by an update.
+   * @return Planned states of the vehicle.
+   */
+  VehicleStates* GetPlannedVehicleStates();
+
+  /**
+   * Calculates a route to the given target.
    * @param target_position Target to reach.
    */
   void CalculateRouteToTargetPosition(const cpm_routing::Pos &target_position);
+
+  /**
+   * Recalculates the route to the stored target.
+   */
+  void RecalculateRoute();
 
   /**
    * Getter for the target_position_reached_ flag.
    * @return True if target point is reached, false otherwise.
    */
   [[nodiscard]] bool IsTargetPositionReached() const;
-
 };
 typedef std::shared_ptr<VehiclePlanner> VehiclePlannerPtr; ///< Smart pointer to allocate planner.
 typedef std::map<Id, VehiclePlannerPtr> VehiclePlannerMap; ///< Map to match planner to vehicle id.
 
-#endif //VEHICLEPLANNER_H_
+#endif // VEHICLEPLANNER_H_
