@@ -100,7 +100,7 @@ void VehiclePlanner::Update(Time delta_t) {
 
 	// Extend route if planned trajectory reaches end
 	if (this->planned_states_.empty()) {
-		//std::cout << "[VEHICLEPLANNER] No Planned States for Vehicle " << this->vehicle_id_ << "." << std::endl;
+		// std::cout << "[VEHICLEPLANNER] No Planned States for Vehicle " << this->vehicle_id_ << "." << std::endl;
 		if (this->current_state_.GetPosition() == this->target_pos_ || true) {
 			this->target_position_reached_ = true;
 			std::cout << "[VEHICLEPLANNER] Vehicle " << this->vehicle_id_ << " has reached its target." << std::endl;
@@ -160,6 +160,13 @@ void VehiclePlanner::RecalculateRoute() {
 
 	std::for_each(shortest_path.begin(), shortest_path.end(),
 				  add_center_line_to_planned_states);
+
+	VehicleState state = {this->time_,
+						  target_lanelet.id(),
+						  this->target_pos_,
+						  {0.0, 0.0},
+						  "VehiclePlanner"};
+	this->AddState(state);
 }
 
 bool VehiclePlanner::IsTargetPositionReached() const {

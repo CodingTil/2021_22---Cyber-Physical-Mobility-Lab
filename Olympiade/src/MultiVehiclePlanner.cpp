@@ -16,7 +16,7 @@ void MultiVehiclePlanner::UpdatePlanner(Time step_size, Time /*planning_time*/) 
 
 		auto map = this->GetLaneGraph();
 
-		auto collision_detected = false;
+		bool collision_detected = false;
 
 		// detect object collision
 		for (auto obstacle : this->GetObstacles()) {
@@ -44,9 +44,8 @@ void MultiVehiclePlanner::UpdatePlanner(Time step_size, Time /*planning_time*/) 
 			this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
 			*/
 			currentstate.SetVelocity({0.0, 0.0});
-			std::cout << "Changed Velocity" << currentstate.GetVelocity() << std::endl;
 			this->AddVehicleState(id, currentstate, "MultiVehiclePlanner");
-			//this->planned_states_.erase(this->planned_states_.begin(), this->planned_states_.begin() + 3);
+			std::cout << "Changed Velocity" << currentstate.GetVelocity() << std::endl;
 		} else {
 			planner->Update(step_size);
 			this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
