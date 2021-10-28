@@ -19,12 +19,42 @@ void MultiVehiclePlanner::UpdatePlanner(Time step_size, Time /*planning_time*/) 
 		Pos pos = cur.GetPosition();
 		// std::cout << pos << std::endl;
 		Vel velo = cur.GetVelocity();
+
+		// Obstacle Collision
 		for (auto obstacle : this->GetObstacles()) {
 			// Avoid Collisions with objects.
 			Pos obstacle_position = obstacle.second.GetPosition();
 			double distance = std::sqrt(std::pow(obstacle_position.x() - pos.x(), 2) + std::pow(obstacle_position.y() - pos.y(), 2));
 			if (distance < 0.7) {
+				std::cout << "Obstacle Collision with Vehicle " << id << std::endl;
 				change = true;
+			}
+		}
+
+		// Vehicle Collision
+		for (auto vehicle_2 : this->vehicle_planner_) {
+			Id id2 = vehicle_2.first;
+			VehiclePlannerPtr planner2 = vehicle_2.second;
+			Pos pos2 = planner2->GetCurrentVehicleState().GetPosition();
+			double distance = std::sqrt(std::pow(pos2.x() - pos.x(), 2) + std::pow(pos2.y() - pos.y(), 2));
+			if (distance < 0.05) {
+				auto planned_states_1 = planner->GetPlannedVehicleStates();
+				auto planned_states_2 = planner2->GetPlannedVehicleStates();
+				for (int index_1 = 0; index_1 < planned_states_1.size(); index_1++) {
+					if (change)
+						break;
+					auto lanelet_id_1 = planned_states_1[index_1].GetLaneletId();
+					for (int index_2 = 0; index_2 < planned_states_2.size(); index_2++) {
+						auto lanelet_id_2 = planned_states_1[index_2].GetLaneletId();
+						if (lanelet_id_1 == lanelet_id_2) {
+							if (index_1 > index_2) {
+								std::cout << "Vehicle " << id << " collided with Vehicle " << id2 << std::endl;
+								change = true;
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -38,35 +68,12 @@ void MultiVehiclePlanner::UpdatePlanner(Time step_size, Time /*planning_time*/) 
 			cur.SetTime(cur.GetTime() + step_size);
 			cur.SetVelocity({0.0, 0.0});
 			this->AddVehicleState(id, cur, "MultiVehiclePlanner");
-
-			//std::cout << cur.GetVelocity() << std::endl;
-			//std::cout << planner->GetCurrentVehicleState().GetVelocity() << std::endl;
-			//std::cout << "Position" << cur.GetPosition() << std::endl;
-			//auto planned_states = planner->GetPlannedVehicleStates();
-			// planned_states.erase(planned_states.begin(),planned_states.end());
-			// planned_states->clear();
-			//std::cout << planned_states->size() << std::endl;
-			//std::cout << planner->GetPlannedVehicleStates()->size() << std::endl;
-			// planner->RecalculateRoute();
-
-
-			/*Vel vel = {0.0, 0.0};
-			planner->UpdateCurrentState(pos, cur.GetLaneletId(), vel);
-			this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
-			*/
 		}
-
-
-
-
-		// this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
-
 
 		// If planner finished stop planning
 		if (planner->IsTargetPositionReached()) {
 			this->vehicle_planner_[id] = nullptr;
 			VehicleReachedTarget(id);
-			//      std::cout << "[MULTIVEHICLEPLANNER] Vehicle " << int(id) << " marked for pickup by system at: " << planning_time << std::endl;
 		}
 	};
 	std::for_each(this->vehicle_planner_.begin(), this->vehicle_planner_.end(), update_function);
