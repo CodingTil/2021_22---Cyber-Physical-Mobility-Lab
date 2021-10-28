@@ -60,6 +60,8 @@ class VehiclePlanner {
 	 */
 	void InitialiseVehicleState(LaneletId lanelet_id, const Pos &pos, const Vel &vel, Time time);
 
+	void UpdateTimer(Time delta_t);
+
 	/**
 	 * Updates the current plan until the target is reached than calculates a new route to next target.
 	 * @param delta_t Time elapsed since last update.
