@@ -12,44 +12,46 @@ void MultiVehiclePlanner::UpdatePlanner(Time step_size, Time /*planning_time*/) 
 		if (!planner)
 			return;
 
-		auto planned_states = planner->GetPlannedVehicleStates();
 
-		auto map = this->GetLaneGraph();
-
-		bool collision_detected = false;
-
-		// detect object collision
+		VehicleState cur = planner->GetCurrentVehicleState();
+		// std::cout << static_cast <int> (id) << std::endl;
+		bool change = false;
+		Pos pis = cur.GetPosition();
+		// std::cout << pis << std::endl;
+		Vel velo = cur.GetVelocity();
 		for (auto obstacle : this->GetObstacles()) {
-			auto lanelet = map->FindLaneletByPosition(obstacle.second.GetPosition());
-			if (lanelet.id() == planner->GetCurrentVehicleState().GetLaneletId()) {
-				collision_detected = true;
-				std::cout << "COLLISION DETECTED at LaneletID: " << lanelet.id() << std::endl;
-				std::cout << lanelet << std::endl;
-				/*auto prev = map->FindPreviousLanelets(lanelet);
-				std::cout << prev[0] << std::endl;
-				auto subsequent = map->FindSubsequentLanelets(prev[0]);
-				std::cout << subsequent << " " << typeid(subsequent).name() << std::endl;*/
+			// Avoid Collisions with objects.
+			Pos obstacle_position = obstacle.second.GetPosition();
+			double distance = std::sqrt(std::pow(obstacle_position.x() - pis.x(), 2) + std::pow(obstacle_position.y() - pis.y(), 2));
+			if (distance < 0.7) {
+				change = true;
 			}
 		}
 
-		// Update planner
-		if (collision_detected) {
-			// TODO: Not stopping vehicle yet
-			std::cout << "Stopping vehicle" << std::endl;
 
-			auto currentstate = planner->GetCurrentVehicleState();
-			/*
-			auto pos = currentstate.GetPosition();
-			//planner->UpdateCurrentState(pos, currentstate.GetLaneletId(), {0.0, 0.0});
-			this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
-			*/
-			currentstate.SetVelocity({0.0, 0.0});
-			this->AddVehicleState(id, currentstate, "MultiVehiclePlanner");
-			std::cout << "Changed Velocity" << currentstate.GetVelocity() << std::endl;
-		} else {
+		if (change == false) {
 			planner->Update(step_size);
 			this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
+		} else {
+			// Collision
+			cur.SetVelocity({0.0, 0.0});
+			//std::cout << cur.GetVelocity() << std::endl;
+			//std::cout << planner->GetCurrentVehicleState().GetVelocity() << std::endl;
+			//std::cout << "Position" << cur.GetPosition() << std::endl;
+			this->AddVehicleState(id, cur, "MultiVehiclePlanner");
+			//auto planned_states = planner->GetPlannedVehicleStates();
+			// planned_states.erase(planned_states.begin(),planned_states.end());
+			// planned_states->clear();
+			//std::cout << planned_states->size() << std::endl;
+			//std::cout << planner->GetPlannedVehicleStates()->size() << std::endl;
+			// planner->RecalculateRoute();
 		}
+
+
+
+
+		// this->AddVehicleState(id, planner->GetCurrentVehicleState(), "MultiVehiclePlanner");
+
 
 		// If planner finished stop planning
 		if (planner->IsTargetPositionReached()) {

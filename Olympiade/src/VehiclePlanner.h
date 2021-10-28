@@ -84,7 +84,7 @@ class VehiclePlanner {
 	 * Getter for the planned states. Will be changed by an update.
 	 * @return Planned states of the vehicle.
 	 */
-	VehicleStates GetPlannedVehicleStates();
+	VehicleStates* GetPlannedVehicleStates();
 
 	/**
 	 * Calculates a route to the given target.
