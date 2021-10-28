@@ -1,0 +1,20 @@
+-- The CXX compiler identification is GNU 9.3.0
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found CPM: /home/cpm/dev/software/cpm_lib/build/libcpm.so  
+Cpm directory /home/cpm/dev/software/cpm_lib
+fastrtps version: 2.3.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/cpm/dev/software/user_program/program/build
+Scanning dependencies of target cpm_bin
+[ 20%] Building CXX object CMakeFiles/cpm_bin.dir/src/main.cpp.o
+[ 40%] Building CXX object CMakeFiles/cpm_bin.dir/src/lane_graph_tools.cpp.o
+[ 60%] Building CXX object CMakeFiles/cpm_bin.dir/src/VehicleTrajectoryPlanningState.cpp.o
+[ 80%] Building CXX object CMakeFiles/cpm_bin.dir/src/MultiVehicleTrajectoryPlanner.cpp.o
+[100%] Linking CXX executable cpm_bin
+[100%] Built target cpm_bin

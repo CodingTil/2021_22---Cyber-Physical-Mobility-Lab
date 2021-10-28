@@ -1,0 +1,3 @@
+/home/cpm/dev/software/user_program/program/build/CMakeFiles/rebuild_cache.dir
+/home/cpm/dev/software/user_program/program/build/CMakeFiles/edit_cache.dir
+/home/cpm/dev/software/user_program/program/build/CMakeFiles/cpm_bin.dir

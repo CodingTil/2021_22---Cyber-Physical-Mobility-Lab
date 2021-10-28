@@ -1,0 +1,15 @@
+-- Box2D version: 
+-- Cpm directory: /home/cpm/dev/software/cpm_lib
+-- Cpm Scenario found.
+-- Cpm Routing found.
+-- FastRTPS version: 2.3.1
+-- Eigen3 version: 3.3.7
+-- Boost Version: 1.71.0
+-- PugiXml found.
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/cpm/dev/software/user_program/program/build
+Scanning dependencies of target cpm_bin
+[ 25%] Building CXX object CMakeFiles/cpm_bin.dir/src/MultiVehiclePlanner.cpp.o
+[ 50%] Linking CXX executable cpm_bin
+[100%] Built target cpm_bin

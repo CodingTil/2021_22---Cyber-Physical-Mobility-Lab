@@ -1,0 +1,26 @@
+-- The CXX compiler identification is GNU 9.3.0
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Box2D version: 
+-- Found CPM: /home/cpm/dev/software/cpm_lib/build/libcpm.so  
+-- Cpm directory: /home/cpm/dev/software/cpm_lib
+-- Cpm Scenario found.
+-- Cpm Routing found.
+-- FastRTPS version: 2.3.1
+-- Eigen3 version: 3.3.7
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake (found version "1.71.0") found components: serialization filesystem program_options 
+-- Boost Version: 1.71.0
+-- PugiXml found.
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/cpm/dev/software/user_program/program/build
+Scanning dependencies of target cpm_bin
+[ 25%] Building CXX object CMakeFiles/cpm_bin.dir/src/VehiclePlanner.cpp.o
+[ 75%] Building CXX object CMakeFiles/cpm_bin.dir/src/main.cpp.o
+[ 75%] Building CXX object CMakeFiles/cpm_bin.dir/src/MultiVehiclePlanner.cpp.o
+[100%] Linking CXX executable cpm_bin
+[100%] Built target cpm_bin

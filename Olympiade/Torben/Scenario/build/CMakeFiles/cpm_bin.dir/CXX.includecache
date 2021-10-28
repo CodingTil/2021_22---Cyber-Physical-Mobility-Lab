@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/cpm/dev/software/user_program/program/src/MultiVehiclePlanner.cpp
+MultiVehiclePlanner.h
+/home/cpm/dev/software/user_program/program/src/MultiVehiclePlanner.h
+
+/home/cpm/dev/software/user_program/program/src/MultiVehiclePlanner.h
+cpm_routing/cpm_routing.h
+-
+VehiclePlanner.h
+/home/cpm/dev/software/user_program/program/src/VehiclePlanner.h
+
+/home/cpm/dev/software/user_program/program/src/VehiclePlanner.h
+cpm_routing/cpm_routing.h
+-
+
