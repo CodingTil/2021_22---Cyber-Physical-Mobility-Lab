@@ -120,8 +120,8 @@ VehicleState VehiclePlanner::GetCurrentVehicleState() const {
 	return this->current_state_;
 }
 
-VehicleStates* VehiclePlanner::GetPlannedVehicleStates() {
-	return &planned_states_;
+VehicleStates VehiclePlanner::GetPlannedVehicleStates() {
+	return planned_states_;
 }
 
 void VehiclePlanner::CalculateRouteToTargetPosition(const Pos &target_position) {
@@ -166,7 +166,7 @@ void VehiclePlanner::RecalculateRoute() {
 	std::for_each(shortest_path.begin(), shortest_path.end(),
 				  add_center_line_to_planned_states);
 
-	this->planned_states_.erase(this->planned_states_.end() - 1, this->planned_states_.end());
+	//this->planned_states_.erase(this->planned_states_.end() - 1, this->planned_states_.end());
 
 	VehicleState state = {this->time_,
 						  target_lanelet.id(),
