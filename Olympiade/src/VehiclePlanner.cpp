@@ -87,9 +87,14 @@ void VehiclePlanner::InitialiseVehicleState(LaneletId lanelet_id,
 	this->AddState(current_state_);
 }
 
-void VehiclePlanner::Update(Time delta_t) {
+void VehiclePlanner::UpdateTimer(Time delta_t) {
 	// Update time
 	this->time_ += delta_t;
+}
+
+void VehiclePlanner::Update(Time delta_t) {
+	// Update time
+	UpdateTimer(delta_t);
 
 	// Do not update if target is reached
 	if (this->target_position_reached_)
@@ -161,7 +166,7 @@ void VehiclePlanner::RecalculateRoute() {
 	std::for_each(shortest_path.begin(), shortest_path.end(),
 				  add_center_line_to_planned_states);
 
-	this->planned_states_.erase(this->planned_states_.back() - 1, this->planned_states_.back());
+	this->planned_states_.erase(this->planned_states_.end() - 1, this->planned_states_.end());
 
 	VehicleState state = {this->time_,
 						  target_lanelet.id(),
